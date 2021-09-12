@@ -7,11 +7,11 @@ By using a dataclass to represent the System Parameters:
 * Ensure that all System Parameters are initialized
 """
 
-import numpy as np
 from dataclasses import dataclass
 
-from model.utils import default
-from model.types import (
+
+from ecosystem_model.utils import default
+from ecosystem_model.types import (
     List,
     Percentage
 )
@@ -43,8 +43,10 @@ class Parameters:
     network_inefficiencies: List[Percentage] = default([0.25]) # (%) losses due to hardware inefficiencies, downtime, environemnt, etc. 
     host_setup_delay: List[int] = default([60]) # (Day)
     host_technical_difficulty: List[Percentage] = default([0.25]) # (%) threshold for host onboarding
+    MIN_min_expected_fulfillment: List[Percentage] = default([0.33]) # (%) to what degree do hosts expect to fulfill their maximum capacity?
+    avg_reserve_capacity: List[Percentage] = default([0.25]) # (%) fraction of host capacity in reserve for temp client demand spikes
 
-
+    price_change_delay: List[int] = default([14]) 
 
 # Initialize Parameters instance with default values
 parameters = Parameters().__dict__
