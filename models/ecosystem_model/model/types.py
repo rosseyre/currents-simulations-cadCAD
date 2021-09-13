@@ -29,7 +29,8 @@ ZAR_per_Mbps = float
 
 # Currents ecosystem
 Currents = int
-ZAR = int
+ZAR = float
+ZAR_per_Day = float
 
 # Simulation types
 Run = int
