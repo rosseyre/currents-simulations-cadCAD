@@ -5,19 +5,22 @@
 
 
 def s_clients(params, substep, state_history, previous_state, policy_input):
-    clients = policy_input["clients"] 
+    newClients = policy_input["clients"] 
+    clients = previous_state["clients"]
+    clients += newClients
     return ("clients", clients)
 
 def s_hosts(params, substep, state_history, previous_state, policy_input):
-    hosts = policy_input["hosts"] 
+    newHosts = policy_input["hosts"]
+    hosts = previous_state["hosts"]
+    hosts += newHosts
     return ("hosts", hosts)
 
 def s_potential_users(params, substep, state_history, previous_state, policy_input):
-
     
     potential_users = previous_state["potential_users"] - policy_input["clients"] - policy_input["hosts"] 
     if(potential_users < 0):
-        potential_users = 1
+        potential_users = 0
 
     return ("potential_users", potential_users)
 
@@ -41,3 +44,16 @@ def s_network_penetration(params, substep, state_history, previous_state, policy
 def s_avg_price(params, substep, state_history, previous_state, policy_input):
     avg_price = policy_input["avg_price"] 
     return ("avg_price", avg_price)
+
+
+def s_hosts_revenue(params, substep, state_history, previous_state, policy_input):
+    hosts_revenue = policy_input["hosts_revenue"] 
+    return ("hosts_revenue", hosts_revenue)
+
+def s_hosts_profit(params, substep, state_history, previous_state, policy_input):
+    hosts_profit = policy_input["hosts_profit"] 
+    return ("hosts_profit", hosts_profit)
+
+def s_platform_daily_revenue(params, substep, state_history, previous_state, policy_input):
+    platform_daily_revenue = policy_input["platform_daily_revenue"] 
+    return ("platform_daily_revenue", platform_daily_revenue)

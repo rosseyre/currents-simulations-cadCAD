@@ -1,10 +1,10 @@
 """
 # Policy functions return an Input/Signal (Python dictionary) which is used by State Update functions to update the state.
 """
-import math
+
 
 import typing
-from model.types import Percentage, Person, Mbps, ZAR_per_Mbps
+from model.types import Percentage, Person, Mbps, ZAR_per_Mbps, ZAR_per_Day
 import model.constants as constant
 
 
@@ -25,7 +25,7 @@ def p_client_adoption(params, substep, state_history, previous_state) -> typing.
     probability_adopted = (clients + hosts) / population
 
     #Calculate price desirability (a percentage value where: 0 = no desirability, 1 = high desirability)
-    price_desirability = float(0)
+    price_desirability = 0
     if (competitor_price-avg_price > 0):
         price_desirability = (competitor_price-avg_price)/competitor_price
 
@@ -36,9 +36,8 @@ def p_client_adoption(params, substep, state_history, previous_state) -> typing.
     if(clientsRegistering > potential_users):
         clientsRegistering = 0
 
-    clients += clientsRegistering
 
-    return {"clients": clients}
+    return {"clients": clientsRegistering}
 
 
 def p_host_adoption(params, substep, state_history, previous_state) -> typing.Dict[str, Person]:
@@ -63,7 +62,7 @@ def p_host_adoption(params, substep, state_history, previous_state) -> typing.Di
     probability_adopted = (clients + hosts) / population
 
     # Estimate the maximum number of clients a typical host can support
-    max_clients = int(avg_host_line / avg_client_allocation) # (Person)
+    max_clients = (avg_host_line / avg_client_allocation) # (Person)
     
     # Adjust fulfillment expectation (%) based on actual network penetration
     host_expected_fulfillment = MIN_expected_fulfillment
@@ -90,10 +89,7 @@ def p_host_adoption(params, substep, state_history, previous_state) -> typing.Di
     if(hostsOnboarding > potential_users):
         hostsOnboarding = 0
 
-    hosts += hostsOnboarding
-
-
-    return {"hosts": hosts}
+    return {"hosts": hostsOnboarding}
 
 
 def p_network_capacity(params, substep, state_history, previous_state) -> typing.Dict[str, Mbps]:
@@ -127,7 +123,6 @@ def p_indicated_network_demand(params, substep, state_history, previous_state) -
     return {"indicated_network_demand": indicated_network_demand}
 
 
-
 def p_network_allocation(params, substep, state_history, previous_state) -> typing.Dict[str, Mbps]:
     
     avg_client_allocation = params["avg_client_allocation"]
@@ -158,7 +153,7 @@ def p_network_penetration(params, substep, state_history, previous_state) -> typ
 
     max_clients_servicable_by_host = constant.max_clients_servicable_by_host 
 
-    network_penetration = (hosts*max_clients_servicable_by_host) / population
+    network_penetration = min(1, (hosts*max_clients_servicable_by_host/population))
 
     return {"network_penetration": network_penetration}
 
@@ -179,12 +174,40 @@ def p_avg_price(params, substep, state_history, previous_state) -> typing.Dict[s
     else:
         supply_demand_ratio = 1
 
-
+    # Determine price change based on supply-demand dynamics:
     desired_price = (currentPrice * supply_demand_ratio) 
-    
     newPrice = currentPrice + ((desired_price - currentPrice) / price_change_delay)
-
+    
     if(newPrice < 0):
         newPrice = 0
 
     return {"avg_price": newPrice}
+
+
+
+def p_host_yields(params, substep, state_history, previous_state) -> typing.Dict[str, ZAR_per_Day]:
+       
+    host_line_cost = params["host_line_cost"]
+    avg_host_line = params["avg_host_line"]
+
+    avg_price = previous_state["avg_price"]
+    hosts = previous_state["hosts"]
+    network_allocation = previous_state["network_allocation"]
+
+
+    total_daily_revenue = avg_price * network_allocation # (ZAR/Day)
+    total_daily_operating_expenses = hosts * host_line_cost * avg_host_line # (ZAR/Day)
+    total_daily_profit = total_daily_revenue - total_daily_operating_expenses # (ZAR/Day)
+
+
+    return {"hosts_revenue": total_daily_revenue, "hosts_profit": total_daily_profit}
+
+
+def p_platform_daily_revenue(params, substep, state_history, previous_state) -> typing.Dict[str, ZAR_per_Day]:
+       
+    daily_host_revenue = previous_state["hosts_revenue"]
+    service_fee = params["service_fee"]
+
+    daily_platform_revenue = daily_host_revenue * service_fee
+
+    return {"platform_daily_revenue": daily_platform_revenue}

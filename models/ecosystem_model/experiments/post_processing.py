@@ -29,6 +29,7 @@ def post_process(df: pd.DataFrame, drop_timestep_zero=True, parameters=parameter
     df['network_penetration'] = df['network_penetration']
     df['hosts'] = df['hosts'].round()
     df['clients'] = df['clients'].round()
+    df['potential_users'] = df['potential_users'].round()
 
 
     # Drop the initial state for plotting
