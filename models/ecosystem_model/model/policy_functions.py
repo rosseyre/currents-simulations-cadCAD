@@ -1,6 +1,7 @@
 """
 # Policy functions return an Input/Signal (Python dictionary) which is used by State Update functions to update the state.
 """
+import math
 
 import typing
 from model.types import Percentage, Person, Mbps, ZAR_per_Mbps
@@ -12,6 +13,7 @@ def p_client_adoption(params, substep, state_history, previous_state) -> typing.
     onboarding_coeff = params["onboarding_coefficient"]
     competitor_price = params["client_competitor_price"]
     registration_delay = params["client_registration_delay"]
+    population = params["initial_population"]
 
     avg_price = previous_state["avg_price"]
     hosts = previous_state["hosts"]
@@ -20,7 +22,7 @@ def p_client_adoption(params, substep, state_history, previous_state) -> typing.
 
     # WORD-OF-MOUTH
     # Calculate the probability that a contact via word-of-mouth has already adopted 
-    probability_adopted = (clients + hosts) / potential_users
+    probability_adopted = (clients + hosts) / population
 
     #Calculate price desirability (a percentage value where: 0 = no desirability, 1 = high desirability)
     price_desirability = float(0)
@@ -48,6 +50,7 @@ def p_host_adoption(params, substep, state_history, previous_state) -> typing.Di
     technical_difficulty = params["host_technical_difficulty"]
     MIN_expected_fulfillment = params["MIN_expected_fulfillment"]
     avg_client_allocation = params["avg_client_allocation"]
+    population = params["initial_population"]
 
     avg_price = previous_state["avg_price"]
     hosts = previous_state["hosts"]
@@ -57,7 +60,7 @@ def p_host_adoption(params, substep, state_history, previous_state) -> typing.Di
 
     # WORD-OF-MOUTH
     # Calculate the probability that a contact via word-of-mouth has already adopted 
-    probability_adopted = (clients + hosts) / potential_users
+    probability_adopted = (clients + hosts) / population
 
     # Estimate the maximum number of clients a typical host can support
     max_clients = int(avg_host_line / avg_client_allocation) # (Person)
@@ -74,10 +77,10 @@ def p_host_adoption(params, substep, state_history, previous_state) -> typing.Di
 
     profit = expected_revenue - operating_expenses # (ZAR/Day)
 
-    if(profit > 0):
-        expected_margin = profit / expected_revenue
+    if(profit >= 0):
+        expected_margin = (profit / expected_revenue) 
     else:
-        expected_margin = 0
+        expected_margin = 0.01
 
 
     #Calculate the number of new hosts who registered
