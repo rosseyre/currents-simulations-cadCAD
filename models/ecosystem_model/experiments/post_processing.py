@@ -26,8 +26,9 @@ def post_process(df: pd.DataFrame, drop_timestep_zero=True, parameters=parameter
 
     
     # Convert decimals to percentages
-    df['network_penetration'] = df['network_penetration'] * 100
-
+    df['network_penetration'] = df['network_penetration']
+    df['hosts'] = df['hosts'].round()
+    df['clients'] = df['clients'].round()
 
 
     # Drop the initial state for plotting
