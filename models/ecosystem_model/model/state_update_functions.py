@@ -46,13 +46,13 @@ def s_avg_price(params, substep, state_history, previous_state, policy_input):
     return ("avg_price", avg_price)
 
 
-def s_hosts_revenue(params, substep, state_history, previous_state, policy_input):
-    hosts_revenue = policy_input["hosts_revenue"] 
-    return ("hosts_revenue", hosts_revenue)
+def s_hosts_daily_revenue(params, substep, state_history, previous_state, policy_input):
+    hosts_daily_revenue = policy_input["hosts_daily_revenue"] 
+    return ("hosts_daily_revenue", hosts_daily_revenue)
 
-def s_hosts_profit(params, substep, state_history, previous_state, policy_input):
-    hosts_profit = policy_input["hosts_profit"] 
-    return ("hosts_profit", hosts_profit)
+def s_hosts_daily_profit(params, substep, state_history, previous_state, policy_input):
+    hosts_daily_profit = policy_input["hosts_daily_profit"] 
+    return ("hosts_daily_profit", hosts_daily_profit)
 
 def s_platform_daily_revenue(params, substep, state_history, previous_state, policy_input):
     platform_daily_revenue = policy_input["platform_daily_revenue"] 

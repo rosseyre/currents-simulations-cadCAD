@@ -5,6 +5,12 @@ import model.constants as constants
 from model.system_parameters import parameters, Parameters
 
 
+legend_state_variable_name_mapping = {
+    "timestamp": "Day",
+    
+}
+
+
 def assign_parameters(df: pd.DataFrame, parameters: Parameters, set_params=[]):
     if set_params:
         parameter_sweep = generate_parameter_sweep(parameters)
@@ -21,15 +27,30 @@ def post_process(df: pd.DataFrame, drop_timestep_zero=True, parameters=parameter
     # Assign parameters to DataFrame
     assign_parameters(df, parameters, [
         # Parameters to assign to DataFrame
-        #'dt'
+        'service_fee',
+        'avg_host_line',
+        'onboarding_coefficient',
+        'host_setup_delay',
+        'client_registration_delay',
+        'MIN_expected_fulfillment',
+        'price_change_delay'
+
     ])
 
     
     # Convert decimals to percentages
-    df['network_penetration'] = df['network_penetration']
+    df['network_penetration'] = df['network_penetration']*100
+    df['service_fee'] = df['service_fee']*100
+
+    # Convert floats to integers
     df['hosts'] = df['hosts'].round()
     df['clients'] = df['clients'].round()
     df['potential_users'] = df['potential_users'].round()
+    
+    # Convert floats ZAR values to integers
+    df['hosts_daily_revenue'] = df['hosts_daily_revenue'].round()
+    df['hosts_daily_profit'] = df['hosts_daily_profit'].round()
+    df['platform_daily_revenue'] = df['platform_daily_revenue'].round()
 
 
     # Drop the initial state for plotting

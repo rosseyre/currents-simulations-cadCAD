@@ -62,13 +62,13 @@ state_update_blocks = [
             Yields
         """,
         "policies": {
-            "hosts_revenue": policy.p_host_yields,
-            "hosts_profit": policy.p_host_yields,
+            "hosts_daily_revenue": policy.p_host_daily_yields,
+            "hosts_daily_profit": policy.p_host_daily_yields,
             "platform_daily_revenue": policy.p_platform_daily_revenue
         },
         "variables": {
-            "hosts_revenue": state.s_hosts_revenue,
-            "hosts_profit": state.s_hosts_profit,
+            "hosts_daily_revenue": state.s_hosts_daily_revenue,
+            "hosts_daily_profit": state.s_hosts_daily_profit,
             "platform_daily_revenue": state.s_platform_daily_revenue
         }
     }

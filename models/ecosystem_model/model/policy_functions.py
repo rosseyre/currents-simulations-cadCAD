@@ -21,8 +21,8 @@ def p_client_adoption(params, substep, state_history, previous_state) -> typing.
     potential_users = previous_state["potential_users"]
 
     # WORD-OF-MOUTH
-    # Calculate the probability that a contact via word-of-mouth has already adopted 
-    probability_adopted = (clients + hosts) / population
+    # Calculate the probability that a 
+    probability_WOM = (clients + hosts) / (clients + hosts + potential_users)
 
     #Calculate price desirability (a percentage value where: 0 = no desirability, 1 = high desirability)
     price_desirability = 0
@@ -31,7 +31,7 @@ def p_client_adoption(params, substep, state_history, previous_state) -> typing.
 
     #Calculate the number of new clients who registered
     
-    clientsRegistering = (onboarding_coeff * potential_users * price_desirability * (1-probability_adopted)) / registration_delay
+    clientsRegistering = onboarding_coeff* (potential_users * price_desirability * probability_WOM) / registration_delay
     
     if(clientsRegistering > potential_users):
         clientsRegistering = 0
@@ -58,8 +58,8 @@ def p_host_adoption(params, substep, state_history, previous_state) -> typing.Di
     network_penetration = previous_state["network_penetration"]
 
     # WORD-OF-MOUTH
-    # Calculate the probability that a contact via word-of-mouth has already adopted 
-    probability_adopted = (clients + hosts) / population
+    # Calculate the probability that 
+    probability_WOM = (clients + hosts) / (clients + hosts + potential_users)
 
     # Estimate the maximum number of clients a typical host can support
     max_clients = (avg_host_line / avg_client_allocation) # (Person)
@@ -84,7 +84,7 @@ def p_host_adoption(params, substep, state_history, previous_state) -> typing.Di
 
     #Calculate the number of new hosts who registered
     
-    hostsOnboarding = (onboarding_coeff * expected_margin * potential_users * (1-probability_adopted) * (1-technical_difficulty) ) / setup_delay
+    hostsOnboarding = onboarding_coeff * (expected_margin * potential_users * probability_WOM * (1-technical_difficulty) ) / setup_delay
 
     if(hostsOnboarding > potential_users):
         hostsOnboarding = 0
@@ -185,7 +185,7 @@ def p_avg_price(params, substep, state_history, previous_state) -> typing.Dict[s
 
 
 
-def p_host_yields(params, substep, state_history, previous_state) -> typing.Dict[str, ZAR_per_Day]:
+def p_host_daily_yields(params, substep, state_history, previous_state) -> typing.Dict[str, ZAR_per_Day]:
        
     host_line_cost = params["host_line_cost"]
     avg_host_line = params["avg_host_line"]
@@ -200,14 +200,14 @@ def p_host_yields(params, substep, state_history, previous_state) -> typing.Dict
     total_daily_profit = total_daily_revenue - total_daily_operating_expenses # (ZAR/Day)
 
 
-    return {"hosts_revenue": total_daily_revenue, "hosts_profit": total_daily_profit}
+    return {"hosts_daily_revenue": total_daily_revenue, "hosts_daily_profit": total_daily_profit}
 
 
 def p_platform_daily_revenue(params, substep, state_history, previous_state) -> typing.Dict[str, ZAR_per_Day]:
        
-    daily_host_revenue = previous_state["hosts_revenue"]
+    hosts_daily_revenue = previous_state["hosts_daily_revenue"]
     service_fee = params["service_fee"]
 
-    daily_platform_revenue = daily_host_revenue * service_fee
+    platform_daily_revenue = hosts_daily_revenue * service_fee
 
-    return {"platform_daily_revenue": daily_platform_revenue}
+    return {"platform_daily_revenue": platform_daily_revenue}
