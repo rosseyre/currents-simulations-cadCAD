@@ -29,8 +29,8 @@ class StateVariables:
     network_allocation: int = 0 # (Mbps) Actual allocated demand
     network_penetration: Percentage = 0 # (%) Population servicable by hosts (a function of network coverage)
     
-    hosts_revenue: float = 0 # (ZAR/Day)
-    hosts_profit: float = 0 # (ZAR/Day)
+    hosts_daily_revenue: float = 0 # (ZAR/Day)
+    hosts_daily_profit: float = 0 # (ZAR/Day)
     platform_daily_revenue: float = 0 # (ZAR/Day)
 
 
