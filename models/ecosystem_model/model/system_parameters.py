@@ -9,7 +9,6 @@ By using a dataclass to represent the System Parameters:
 
 from dataclasses import dataclass
 
-
 from model.utils import default
 from model.types import (
     List,
@@ -51,3 +50,5 @@ class Parameters:
 
 # Initialize Parameters instance with default values
 parameters = Parameters().__dict__
+
+
