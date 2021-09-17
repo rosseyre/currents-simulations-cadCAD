@@ -9,7 +9,6 @@ By using a dataclass to represent the System Parameters:
 
 from dataclasses import dataclass
 
-
 from model.utils import default
 from model.types import (
     List,
@@ -31,8 +30,8 @@ class Parameters:
 
     # ECOSYSTEM PARAMETERS
     initial_population: List[int] = default([10000])
-    onboarding_coefficient: List[float] = default([0.01]) # (%) adjust onboarding rate 
-    service_fee: List[Percentage] = default([0.025]) # (%) 
+    onboarding_coefficient: List[float] = default([0.75]) # (%) adjust system-wide onboarding rate
+    service_fee: List[Percentage] = default([0.05]) # (%) Fee charged on host earnings
     
     # CLIENT PARAMETERS
     client_competitor_price: List[float] = default([2]) # (ZAR/Mbps/Day) equivelent to AVG host service 
@@ -51,3 +50,5 @@ class Parameters:
 
 # Initialize Parameters instance with default values
 parameters = Parameters().__dict__
+
+

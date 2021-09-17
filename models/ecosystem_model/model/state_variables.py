@@ -18,9 +18,9 @@ class StateVariables:
     state variable key: state variable type = default state variable value
     """
 
-    clients: int = 5
+    clients: int = 10
     hosts: int = 1
-    potential_users: int = 10000 # p.Parameters["initial_population"][0]
+    potential_users: int = 10_000 # p.Parameters["initial_population"][0]
 
     avg_price: float = 2 # (ZAR/Mbps/Day) The price hosts set for connectivity
 

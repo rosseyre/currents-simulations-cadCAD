@@ -28,12 +28,19 @@ def post_process(df: pd.DataFrame, drop_timestep_zero=True, parameters=parameter
     assign_parameters(df, parameters, [
         # Parameters to assign to DataFrame
         'service_fee',
+        'avg_client_allocation',
         'avg_host_line',
+        'host_line_cost',
         'onboarding_coefficient',
+        'avg_reserve_capacity',
         'host_setup_delay',
         'client_registration_delay',
+        'client_competitor_price',
         'MIN_expected_fulfillment',
-        'price_change_delay'
+        'price_change_delay',
+        'host_technical_difficulty',
+        'initial_population',
+        'network_inefficiencies'
 
     ])
 

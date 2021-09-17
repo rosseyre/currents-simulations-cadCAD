@@ -4,16 +4,22 @@
 
 Dynamical-systems models for simulating and analysing the CURRENTS ecosystem, based on the open-source Python libraries radCAD / cadCAD
 
-## Visuals
+## Visual References
+
+<i>Add example plots</i>
+
+## Differential model Specifications
+
+(link to diff spec on Miro board)
 
 ## Directory Structure
 
-data/: Datasets and API data sources
-docs/: Misc. documentation
-experiments/: Analysis notebooks and experiment workflow (e.g. configuration and execution)
-logs/: Experiment runtime log files
-model/: Model software architecture (structural and configuration modules)
-tests/: Unit and integration tests for model and notebooks
+- data/: Datasets and API data sources
+- docs/: Misc. documentation
+- experiments/: Analysis notebooks and experiment workflow (e.g. configuration and execution)
+- logs/: Experiment runtime log files
+- model/: Model software architecture (structural and configuration modules)
+- tests/: Unit and integration tests for model and notebooks
 
 <i>Parts of this project, particularly the project structure and modular experiment workflow, is inspired by the open-source <a href="">Ethereum Economic Model</a> originally developed by CADLabs. </i>
 
@@ -24,7 +30,7 @@ tests/: Unit and integration tests for model and notebooks
 
 ### Option 1: Anaconda Development Environment
 
-This option guides you through setting up a cross-platform, beginner-friendly (yet more than capable enough for the advanced user) development environment using Anaconda to install Python 3 and Jupyter. There is also a video that accompanies this option and walks through all the steps: Model Quick-Start Guide
+This option guides you through setting up a cross-platform development environment using Anaconda to install Python 3 and Jupyter.
 
 1. Download [Anaconda](https://www.anaconda.com/products/individual)
 2. Use Anaconda to install Python 3
@@ -86,9 +92,7 @@ jupyter notebook
 jupyter lab
 ```
 
-## Differential model Specifications
-
-(link to diff spec on Miro board)
+---
 
 ## Usage
 
