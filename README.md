@@ -18,7 +18,7 @@ Dynamical-systems models for simulating and analysing the CURRENTS ecosystem, ba
 
 ## Differential model Specifications
 
-![alt text](https://github.com/rosseyre/currents-simulations/blob/main/img/Currents-Diff-spec_1.png)
+![alt text](https://github.com/rosseyre/currents-simulations/blob/main/img/Currents-Diff-spec_1.jpg)
 
 ## Directory Structure
 
